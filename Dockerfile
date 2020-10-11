@@ -7,14 +7,13 @@ COPY pom.xml .
 COPY src src
 
 RUN /workspace/app/mvnw install -DskipTests
-RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
+RUN mkdir -p target/dependency && (cd target/dependency; java -Djarmode=layertools -jar ../*.jar extract)
 
 FROM openjdk:15-jdk-alpine
-
-VOLUME /tmp
-
+#FROM adoptopenjdk:11-jre-hotspot
 ARG DEPENDENCY=/workspace/app/target/dependency
-COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /app/lib
-COPY --from=build ${DEPENDENCY}/META-INF /app/META-INF
-COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app
-ENTRYPOINT ["java","-cp","app:app/lib/*","com.example.myapp.MyAppApplication"]
+COPY --from=builder ${DEPENDENCY}/dependencies/ ./
+COPY --from=builder ${DEPENDENCY}/spring-boot-loader/ ./
+COPY --from=builder ${DEPENDENCY}/snapshot-dependencies/ ./
+COPY --from=builder ${DEPENDENCY}/application/ ./
+ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
