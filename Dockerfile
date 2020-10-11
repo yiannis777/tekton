@@ -7,7 +7,11 @@ COPY pom.xml .
 COPY src src
 
 RUN /workspace/app/mvnw install -DskipTests
-RUN mkdir -p target/dependency && (cd target/dependency; java -Djarmode=layertools -jar ../*.jar extract)
+
+ARG JAR_FILE=/workspace/app/target/*.jar
+COPY ${JAR_FILE} application.jar
+
+RUN mkdir -p target/dependency && (cd target/dependency; java -Djarmode=layertools -jar application.jar extract)
 
 FROM openjdk:15-jdk-alpine
 #FROM adoptopenjdk:11-jre-hotspot
