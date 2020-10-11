@@ -1,5 +1,4 @@
-FROM openjdk:15-jdk-alpine as builder
-#FROM adoptopenjdk:11-jre-hotspot as builder
+FROM openjdk:8-jdk-alpine as build
 WORKDIR /workspace/app
 
 COPY mvnw .
@@ -8,16 +7,14 @@ COPY pom.xml .
 COPY src src
 
 RUN /workspace/app/mvnw install -DskipTests
+RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
-ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} application.jar
-RUN java -Djarmode=layertools -jar application.jar extract
+FROM openjdk:8-jre-alpine
 
-FROM openjdk:15-jdk-alpine
-#FROM adoptopenjdk:11-jre-hotspot
-WORKDIR /workspace/app
-COPY --from=builder /workspace/app/dependencies/ ./
-COPY --from=builder /workspace/app/spring-boot-loader/ ./
-COPY --from=builder /workspace/app/snapshot-dependencies/ ./
-COPY --from=builder /workspace/app/application/ ./
-ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
+VOLUME /tmp
+
+ARG DEPENDENCY=/workspace/app/target/dependency
+COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /app/lib
+COPY --from=build ${DEPENDENCY}/META-INF /app/META-INF
+COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app
+ENTRYPOINT ["java","-cp","app:app/lib/*","com.example.myapp.MyAppApplication"]
