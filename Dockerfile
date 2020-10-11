@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-alpine as build
+FROM openjdk:15-jdk-alpine as build
 WORKDIR /workspace/app
 
 COPY mvnw .
@@ -9,7 +9,7 @@ COPY src src
 RUN /workspace/app/mvnw install -DskipTests
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 
-FROM openjdk:8-jre-alpine
+FROM openjdk:15-jre-alpine
 
 VOLUME /tmp
 
