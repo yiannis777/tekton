@@ -9,7 +9,7 @@ COPY src src
 
 RUN application/mvnw install -DskipTests
 
-ARG JAR_FILE=application/target/*.jar
+ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} application.jar
 RUN java -Djarmode=layertools -jar application.jar extract
 
