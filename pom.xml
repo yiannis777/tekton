@@ -45,9 +45,9 @@
                                         <image>
                                             <name>yiannis777/tekton</name>
                                         </image>
-<!--                    <layers>-->
-<!--                        <enabled>true</enabled>-->
-<!--                    </layers>-->
+                    <layers>
+                        <enabled>true</enabled>
+                    </layers>
                 </configuration>
             </plugin>
         </plugins>
