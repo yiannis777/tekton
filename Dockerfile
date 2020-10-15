@@ -10,7 +10,7 @@ COPY src src
 # cache...?
 RUN /workspace/app/mvnw install -DskipTests
 
-RUN mkdir -p target/dependency && (cd target/dependency; java -Djarmode=layertools -jar ../*.jar extract)
+RUN mkdir -p target/dependency && (cd target/dependency; java -Djarmode=layertools -jar /workspace/app/target/*.jar extract)
 
 FROM openjdk:15-jdk-alpine
 #FROM adoptopenjdk:11-jre-hotspot
