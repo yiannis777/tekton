@@ -42,12 +42,12 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <!--                    <image>-->
-                    <!--                        <name>yiannis777/tekton</name>-->
-                    <!--                    </image>-->
-                    <layers>
-                        <enabled>true</enabled>
-                    </layers>
+                                        <image>
+                                            <name>yiannis777/tekton</name>
+                                        </image>
+<!--                    <layers>-->
+<!--                        <enabled>true</enabled>-->
+<!--                    </layers>-->
                 </configuration>
             </plugin>
         </plugins>
