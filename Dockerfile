@@ -2,13 +2,15 @@
 FROM openjdk:15-jdk-alpine as build
 WORKDIR /workspace/app
 
-# single copy...?
+#RUN addgroup -S demo && adduser -S demo -G demo
+#USER demo
+
 COPY mvnw .
 COPY .mvn .mvn
 COPY pom.xml .
 COPY src src
 
-RUN --mount=type=cache,target=/root/.m2 /workspace/app/mvnw install -DskipTests
+#RUN --mount=type=cache,target=/root/.m2 /workspace/app/mvnw install -DskipTests
 RUN /workspace/app/mvnw install -DskipTests
 
 RUN mkdir -p target/dependency && (cd target/dependency; jar -xf /workspace/app/target/*.jar)
