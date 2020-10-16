@@ -1,4 +1,4 @@
-FROM openjdk:15-jdk-alpine as builder
+FROM openjdk:15-jdk-alpine as build
 WORKDIR /workspace/app
 
 # single copy...?
