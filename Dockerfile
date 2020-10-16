@@ -18,10 +18,10 @@ RUN mkdir -p target/dependency && (cd target/dependency; java -Djarmode=layertoo
 
 FROM openjdk:15-jdk-alpine
 #FROM adoptopenjdk:11-jre-hotspot
-COPY --from=builder ${DEPENDENCY}/dependencies/ ./
-COPY --from=builder ${DEPENDENCY}/spring-boot-loader/ ./
-COPY --from=builder ${DEPENDENCY}/snapshot-dependencies/ ./
-COPY --from=builder ${DEPENDENCY}/application/ ./
+COPY --from=build ${DEPENDENCY}/dependencies/ ./
+COPY --from=build ${DEPENDENCY}/spring-boot-loader/ ./
+COPY --from=build ${DEPENDENCY}/snapshot-dependencies/ ./
+COPY --from=build ${DEPENDENCY}/application/ ./
 ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]
 
 #ARG DEPENDENCY=/workspace/app/target/dependency
