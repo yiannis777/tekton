@@ -29,7 +29,7 @@ spec:
     spec:
       containers:
         - name: tekton-app
-          image: __IMAGE__:v1.0.1
+          image: __IMAGE__@__DIGEST__
           imagePullPolicy: Always
           ports:
             - name: http-server
